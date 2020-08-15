@@ -1,4 +1,4 @@
-# prereq_network
+# prerequisite graph
 
 A network graph of the Mathematics courses at the Illinois Institute of Technology.
 
