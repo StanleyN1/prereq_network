@@ -101,6 +101,26 @@
             height: 600px;
         }
 
+        .legend {
+          float: left;
+          width: 15%;
+          height: 5%;
+          margin: 5px;
+          border: 1px solid rgba(0, 0, 0, .2);
+          text-align: center;
+        }
+        .unselected {
+          background: #D3D3D3;
+        }
+        .selected {
+          background: #D184C4;
+        }
+        .future_selected {
+          background: #DB4670;
+        }
+        .intersect_selected {
+          background: #8F1A25;
+        }
 
 
 </style>
@@ -126,15 +146,10 @@
     </select>
   </form>
 </div>
-
-<!-- <div id="loadingBar">
-    <div class="outerBorder">
-        <div id="text">0%</div>
-        <div id="border">
-            <div id="bar"></div>
-        </div>
-    </div>
-</div> -->
+<div class='legend unselected'>not offered this sem</div>
+<div class='legend selected'>only offered this sem</div>
+<div class='legend future_selected'>only offered next sem</div>
+<div class='legend intersect_selected'>offered both sem</div>
 
 
 <div id = "config"></div>
