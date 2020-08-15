@@ -1,4 +1,5 @@
 # prerequisite graph
+Link to online version of this app: https://prereq-network.herokuapp.com/
 
 A network graph of the Mathematics courses at the Illinois Institute of Technology.
 
