@@ -15,12 +15,12 @@ function drawGraph() {
     edges = new vis.DataSet(data.edges)
 
     // adding nodes and edges to the graph
-    data = {nodes: nodes, edges: edges};
+    var jdata = {nodes: nodes, edges: edges};
 
     var options = {
       "configure": {
           "enabled": true,
-          "filter": 'physics',
+          "filter": ['physics'],
           "showButton": true
         },
       "edges": {
@@ -92,18 +92,13 @@ function takeInput() {
   var year_chosen = document.getElementById('year-chooser').value;
 
   if (years.includes(year_chosen)) {
-    drawGraph();
+    jdata = JSON.parse(document.getElementById('graph-data').innerText);
+    nodes = new vis.DataSet(jdata.nodes)
+    network.setData({nodes: nodes, edges:edges});
     document.getElementById('year-chooser').value = '';
   }
 }
-// function fitToContainer(){
-//   canvas = document.getElementById('mynetwork')
-//   // Make it visually fill the positioned parent
-//   canvas.style.width ='100%';
-//   canvas.style.height='100%';
-//   // ...then set the internal size to match
-//   canvas.width  = canvas.offsetWidth;
-//   canvas.height = canvas.offsetHeight;
-// }
+
+
 setTimeout(drawGraph, 1000);
 setInterval(takeInput, 1000);
