@@ -66,7 +66,7 @@ function drawGraph() {
     options.configure["container"] = document.getElementById("config");
 
 
-    network = new vis.Network(container, data, options);
+    network = new vis.Network(container, jdata, options);
 
     network.on("stabilizationProgress", function(params) {
       var widthFactor = params.iterations/params.total;
