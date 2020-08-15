@@ -20,7 +20,7 @@ function drawGraph() {
     var options = {
       "configure": {
           "enabled": true,
-          "filter": false,
+          "filter": 'physics',
           "showButton": true
         },
       "edges": {
