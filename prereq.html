@@ -13,6 +13,9 @@
 <script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
 
 <style type="text/css">
+        body {
+          font-family: arial;
+        }
 
         #mynetwork {
             width: 100%;
@@ -22,7 +25,6 @@
             position: relative;
             float: left;
         }
-
 
         #loadingBar {
             position:absolute;
@@ -122,6 +124,13 @@
           background: #8F1A25;
         }
 
+        #tooltip {
+          border: 1px solid rgba(0, 0, 0, .2);
+          background: #3299FF;
+          text-align: center;
+        }
+
+
 
 </style>
 
@@ -134,7 +143,8 @@
   <form id="settings-form">
     <button id="submit" type="button" style="height: 10%; width: 15%;" onclick="showCode()">Show code</button>
     <button id="submit" type="button" style="height: 10%; width: 15%;" onclick="showName()">Show course name</button>
-    <button id="submit" type="button" style="height: 10%; width: 15%;" onclick="changePos()">Show Tree</button>
+    <button id="submit" type="button" style="height: 10%; width: 15%;" onclick="changePos()">Toggle Hand-made Tree</button>
+    <!-- <button id="submit" type="button" style="height: 10%; width: 15%;" onclick="showComputed()">Toggle Computed Tree</button> -->
     <button id="submit" type="button" style="height: 10%; width: 15%;" onclick="togglePhysics()">Toggle Physics</button>
     <select id="year-select" onchange="updateYear()">
       <option value="None" selected>-- Select Sem --</option>
@@ -146,11 +156,13 @@
     </select>
   </form>
 </div>
+
 <div class='legend unselected'>not offered this sem</div>
 <div class='legend selected'>only offered this sem</div>
 <div class='legend future_selected'>only offered next sem</div>
 <div class='legend intersect_selected'>offered both sem</div>
 
+<div id='tooltip' style="display: none;"></div>
 
 <div id = "config"></div>
 <div id = "data" style="display: none;">
@@ -166,9 +178,10 @@
       "configure": {
           "enabled": true,
           "filter": [
-              "physics"
+              "physics", "layout"
           ]
       },
+
       "edges": {
           "color": {
               "inherit": true
@@ -219,26 +232,7 @@
         // put it in its div
         options.configure["container"] = document.getElementById("config");
 
-
         network = new vis.Network(container, data, options);
-
-      //   network.on("stabilizationProgress", function(params) {
-      // 		document.getElementById('loadingBar').removeAttribute("style");
-	    //     var maxWidth = 496;
-	    //     var minWidth = 20;
-	    //     var widthFactor = params.iterations/params.total;
-	    //     var width = Math.max(minWidth,maxWidth * widthFactor);
-      //
-	    //     document.getElementById('bar').style.width = width + 'px';
-	    //     document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
-	    // });
-	    // network.once("stabilizationIterationsDone", function() {
-	    //     document.getElementById('text').innerHTML = '100%';
-	    //     document.getElementById('bar').style.width = '496px';
-	    //     document.getElementById('loadingBar').style.opacity = 0;
-	    //     // really clean the dom element
-	    //     setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
-	    // });
 
         return network;
     }
@@ -319,6 +313,22 @@
       updateGraph();
     }
 
+    // function showComputed(){
+    //   for (var i = 0; i < Object.keys(nodePos).length; i++) {
+    //     delete graphData['nodes'][i]['x'];
+    //     delete graphData['nodes'][i]['y'];
+    //   }
+    //   options['layout']['hierarchical']['direction'] = "UD";
+    //   options['layout']['hierarchical']['sortMethod'] = "directed";
+    //   options['physics']['enabled'] = false;
+    //
+    //   updateGraph();
+    //
+    //   delete options['layout']['hierarchical']['direction'];
+    //   delete options['layout']['hierarchical']['sortMethod'];
+    //   delete options['physics']['enabled'];
+    // }
+
     function changeShape(){
       var s = document.getElementById('shape-select');
       var shape = s.options[s.selectedIndex].value;
@@ -354,6 +364,27 @@
     drawGraph();
     changeShapeInput('dot');
     changePos();
+
+    network.on('click', function(params){
+      var nodeId = params.nodes.toString().substring(9);
+      var x = event.clientX;
+      var y = event.clientY;
+
+      if (nodeId == '') {
+        document.getElementById('tooltip').style.display = "none";
+      }
+      else {
+        document.getElementById('tooltip').style.position = "absolute";
+        document.getElementById('tooltip').style.display = "block";
+        document.getElementById('tooltip').style.padding = "4px";
+      }
+
+
+      document.getElementById('tooltip').style.left = x + 10;
+      document.getElementById('tooltip').style.top = y - 45;
+      document.getElementById('tooltip').innerText = nodeId;
+
+    });
     //updateGraph();
 
     //console.log(network.getPositions());
